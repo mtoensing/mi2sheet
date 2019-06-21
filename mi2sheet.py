@@ -60,6 +60,38 @@ def write(args):
     #print(row)
     sheet.insert_row(row, index, value_input_option='USER_ENTERED')
 
+def writesheet(args):
+    keyfile = args.keyfile
+    # use creds to create a client to interact with the Google Drive API
+    scopes = ['https://www.googleapis.com/auth/spreadsheets', "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+    #print("Authorizing")
+    creds = ServiceAccountCredentials.from_json_keyfile_name(keyfile, scopes)
+    client = gspread.authorize(creds)
+    sheet = client.open("sensor-data").sheet1
+    row = poll(args);
+    index = 2
+    #print("Writing to sheet")
+    #print(row)
+    sheet.insert_row(row, index, value_input_option='USER_ENTERED')
+
+def pollandwrite(args):
+
+    keyfile = args.keyfile
+    sheetname = args.sheetname
+    worksheet = args.worksheet
+    rowindex = args.rowindex
+
+    # use creds to create a client to interact with the Google Drive API
+    scopes = ['https://www.googleapis.com/auth/spreadsheets', "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+    #print("Authorizing")
+    creds = ServiceAccountCredentials.from_json_keyfile_name(keyfile, scopes)
+    client = gspread.authorize(creds)
+    sheet = client.open(sheetname).get_worksheet(worksheet)
+    row = poll(args);
+    #print("Writing to sheet")
+    #print(row)
+    sheet.insert_row(row, rowindex, value_input_option='USER_ENTERED')
+
 
 def _get_backend(args):
     """Extract the backend class from the command line arguments."""
@@ -97,6 +129,14 @@ def main():
     parser_poll = subparsers.add_parser('write', help='write data from a sensor to spreadsheet')
     parser_poll.add_argument('mac', type=valid_mitemp_mac)
     parser_poll.set_defaults(func=write)
+
+    parser_poll = subparsers.add_parser('pollandwrite', help='poll and write data from a sensor to spreadsheet')
+    parser_poll.add_argument('mac', type=valid_mitemp_mac)
+    parser_poll.add_argument('keyfile', type=str)
+    parser_poll.add_argument('sheetname', type=str)
+    parser_poll.add_argument('worksheet', type=int, default=0)
+    parser_poll.add_argument('rowindex', type=int, default=2)
+    parser_poll.set_defaults(func=pollandwrite)
 
     parser_scan = subparsers.add_parser('backends', help='list the available backends')
     parser_scan.set_defaults(func=list_backends)
