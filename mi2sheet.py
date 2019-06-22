@@ -57,7 +57,7 @@ def write(args):
     row = poll(args);
     index = 2
     #print("Writing to sheet")
-    #print(row)
+    print(row)
     sheet.insert_row(row, index, value_input_option='USER_ENTERED')
 
 def writesheet(args):
@@ -89,7 +89,7 @@ def pollandwrite(args):
     sheet = client.open(sheetname).get_worksheet(worksheet)
     row = poll(args);
     #print("Writing to sheet")
-    #print(row)
+    print(row)
     sheet.insert_row(row, rowindex, value_input_option='USER_ENTERED')
 
 
