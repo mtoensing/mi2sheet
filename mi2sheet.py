@@ -39,40 +39,9 @@ def poll(args):
 
     #print("Compiling this data")
     now = datetime.datetime.now().strftime("%m/%d/%Y %H:%M:%S")
-
     data = [now,temperature,humidity,battery]
-
-
+    print(data)
     return data
-
-
-def write(args):
-    keyfile = '/home/pi/mi2sheet/client_secret.json'
-    # use creds to create a client to interact with the Google Drive API
-    scopes = ['https://www.googleapis.com/auth/spreadsheets', "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
-    #print("Authorizing")
-    creds = ServiceAccountCredentials.from_json_keyfile_name(keyfile, scopes)
-    client = gspread.authorize(creds)
-    sheet = client.open("sensor-data").sheet1
-    row = poll(args);
-    index = 2
-    #print("Writing to sheet")
-    print(row)
-    sheet.insert_row(row, index, value_input_option='USER_ENTERED')
-
-def writesheet(args):
-    keyfile = args.keyfile
-    # use creds to create a client to interact with the Google Drive API
-    scopes = ['https://www.googleapis.com/auth/spreadsheets', "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
-    #print("Authorizing")
-    creds = ServiceAccountCredentials.from_json_keyfile_name(keyfile, scopes)
-    client = gspread.authorize(creds)
-    sheet = client.open("sensor-data").sheet1
-    row = poll(args);
-    index = 2
-    #print("Writing to sheet")
-    #print(row)
-    sheet.insert_row(row, index, value_input_option='USER_ENTERED')
 
 def pollandwrite(args):
 
@@ -89,7 +58,6 @@ def pollandwrite(args):
     sheet = client.open(sheetname).get_worksheet(worksheet)
     row = poll(args);
     #print("Writing to sheet")
-    print(row)
     sheet.insert_row(row, rowindex, value_input_option='USER_ENTERED')
 
 
@@ -125,10 +93,6 @@ def main():
     parser_poll = subparsers.add_parser('poll', help='poll data from a sensor')
     parser_poll.add_argument('mac', type=valid_mitemp_mac)
     parser_poll.set_defaults(func=poll)
-
-    parser_poll = subparsers.add_parser('write', help='write data from a sensor to spreadsheet')
-    parser_poll.add_argument('mac', type=valid_mitemp_mac)
-    parser_poll.set_defaults(func=write)
 
     parser_poll = subparsers.add_parser('pollandwrite', help='poll and write data from a sensor to spreadsheet')
     parser_poll.add_argument('mac', type=valid_mitemp_mac)
