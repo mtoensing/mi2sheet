@@ -1,6 +1,6 @@
 # mi2sheet
 
-Tutorial in german language: https://marc.tv/raspberry-pi-temperatur-bluetooth-google-spreadsheet/ 
+Tutorial in german language: https://marc.tv/raspberry-pi-temperatur-bluetooth-google-spreadsheet/
 
 ## Find mac address
 
@@ -8,7 +8,7 @@ Tutorial in german language: https://marc.tv/raspberry-pi-temperatur-bluetooth-g
 
 ## Poll for data
 
-Edit poll.sh and add mac address. 
+Edit poll.sh and add mac address.
 
 `./poll.sh `
 
@@ -20,7 +20,20 @@ Edit pollandwrite.sh and add spreadsheet name. Don't forget to add a client_secr
 
 # Credits
 Xiaomi MI Temperature and Humidity Sensor with BLE and LCD
-https://github.com/ratcashdev/mitemp 
+https://github.com/ratcashdev/mitemp
 
 Bluetooth LowEnergy wrapper for different python backends.
 https://github.com/ChristianKuehnel/btlewrap
+
+## mysql-config.json
+
+```json
+{
+    "mysql":{
+        "server":"ADR",
+        "user":"USER",
+        "password":"SECRET!!",
+        "db":"DB"
+    }
+}
+```
