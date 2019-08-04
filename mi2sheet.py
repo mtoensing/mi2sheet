@@ -20,6 +20,14 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 current_dir = os.path.dirname(os.path.abspath(__file__)) + "/";
 
+# This works only on a pi
+def writePiTmp(args):
+    device = args.device
+    temp = os.popen("vcgencmd measure_temp | sed 's/[^0-9.]//g'").readline()
+    temperature = temp.replace("temp=","").strip('\n')
+    print(temperature);
+    writeMySQL(args, device, 'pi', 'temperature', temperature, None , None )
+
 def pollData(args):
     """Poll data from the sensor."""
     backend = _get_backend(args)
@@ -90,9 +98,9 @@ def pollandwrite_mysql(args):
     battery = row[2];
     device = args.device
 
-    writeMySQL(args, device, None, 'temperature', temperature, None , None )
-    writeMySQL(args, device, None, 'humidity', humidity, None , None )
-    writeMySQL(args, device, None, 'battery', battery, None , None )
+    writeMySQL(args, device, 'Xiaomi', 'temperature', temperature, None , None )
+    writeMySQL(args, device, 'Xiaomi', 'humidity', humidity, None , None )
+    writeMySQL(args, device, 'Xiaomi', 'battery', battery, None , None )
 
 def writeMySQL(args,device,type,event,value,reading,unit):
 
@@ -163,10 +171,14 @@ def main():
     parser_poll.add_argument('rowindex', type=int, default=2)
     parser_poll.set_defaults(func=pollandwrite)
 
-    parser_poll = subparsers.add_parser('pollandwrite_mysql', help='poll and write data from a sensor to mysql')
+    parser_poll = subparsers.add_parser('writeMiSensor', help='poll and write data from a sensor to mysql')
     parser_poll.add_argument('mac', type=str)
     parser_poll.add_argument('device', type=str)
     parser_poll.set_defaults(func=pollandwrite_mysql)
+
+    parser_poll = subparsers.add_parser('writePiTmp', help='poll and write data from a pis to mysql')
+    parser_poll.add_argument('device', type=str)
+    parser_poll.set_defaults(func=writePiTmp)
 
     parser_scan = subparsers.add_parser('backends', help='list the available backends')
     parser_scan.set_defaults(func=list_backends)

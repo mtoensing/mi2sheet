@@ -25,6 +25,8 @@ https://github.com/ratcashdev/mitemp
 Bluetooth LowEnergy wrapper for different python backends.
 https://github.com/ChristianKuehnel/btlewrap
 
+# BONUS: mysql
+
 ## mysql-config.json
 
 ```json
@@ -37,3 +39,7 @@ https://github.com/ChristianKuehnel/btlewrap
     }
 }
 ```
+
+# BONUS: PiTemp
+
+python3 $DIR/mi2sheet.py writePiTmp "pi4"
