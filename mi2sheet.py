@@ -98,9 +98,9 @@ def pollandwrite_mysql(args):
     battery = row[2];
     device = args.device
 
-    writeMySQL(args, device, 'Xiaomi', 'temperature', temperature, None , None )
-    writeMySQL(args, device, 'Xiaomi', 'humidity', humidity, None , None )
-    writeMySQL(args, device, 'Xiaomi', 'battery', battery, None , None )
+    writeMySQL(args, device, 'Xiaomi', 'temperature', temperature, None , "Celsius" )
+    writeMySQL(args, device, 'Xiaomi', 'humidity', humidity, None , "Celsius" )
+    writeMySQL(args, device, 'Xiaomi', 'battery', battery, None , "Celsius" )
 
 def writeMySQL(args,device,type,event,value,reading,unit):
 
